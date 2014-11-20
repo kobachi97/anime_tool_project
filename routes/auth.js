@@ -44,7 +44,6 @@ module.exports = {
       if (error) {
         res.send("yeah no. didn't work.");
       } else {
-        console.log('complete');
         req.session.oauth = {};
         req.session.oauth.token = oauth_token;
         res.redirect('https://twitter.com/oauth/authenticate?oauth_token=' + oauth_token);
@@ -70,6 +69,10 @@ module.exports = {
       );
     } else
       res.redirect('/login');
+  },
+  logout: function(req, res) {
+    req.session.destroy();
+    res.redirect('/login');
   }
 };
 

@@ -43,6 +43,7 @@ app.use('/users', routes.users);
 app.use('/login', routes.login);
 app.use('/auth/twitter', auth.auth);
 app.use('/auth/callback', auth.callback);
+app.use('/auth/logout', auth.logout);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

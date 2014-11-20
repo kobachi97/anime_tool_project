@@ -7,21 +7,58 @@
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
-    <table>
+    <p><a href="/auth/logout">logout</a></p>
+
+    <div style="float: left">
+    <table border="1">
       <tr>
         <th>タイトル</th>
         <th>時間</th>
         <th>次回</th>
+        <th>曜日</th>
+        <th>本日放送</th>
+        <th>状態</th>
         <th>放送局</th>
+        <th>全何話</th>
       </tr>
         <% data.forEach(function(val){ %>
           <tr>
             <td><%= val.title %></td>
             <td><%= val.time %></td>
-            <td><%= val.state %></td>
+            <td><%= val.next %></td>
+            <td><%= val.week %></td>
+            <% if(val.today == 1) { %>
+            <td>本日放送</td>
+            <% } else { %>
+            <td></td>
+            <% } %>
+            <% if(val.state == 'onair') { %>
+              <td>放送中</td>
+            <% } else { %>
+              <td>放送中</td>
+            <% } %>
             <td><%= val.station %></td>
+
+
+
+            <td><%= val.episode %></td>
+
           </tr>
         <% }) %>
     </table>
+    </div>
+
+    <!--Tweet表示部分-->
+    <div>
+
+      <% tweetList.statuses.forEach(function(val){ %>
+
+
+        <li><%= val.text %></li>
+      <% }) %>
+
+    </div>
+
+
   </body>
 </html>
