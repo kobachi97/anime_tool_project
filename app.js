@@ -11,7 +11,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes');
-var auth = require('./routes/auth');
+var twitter = require('./routes/twitter');
 //var users = require('./routes/users');
 var mysql = require('mysql');
 
@@ -41,9 +41,10 @@ app.use(session(
 app.use('/', routes.main);
 app.use('/users', routes.users);
 app.use('/login', routes.login);
-app.use('/auth/twitter', auth.auth);
-app.use('/auth/callback', auth.callback);
-app.use('/auth/logout', auth.logout);
+app.use('/auth/twitter', twitter.auth);
+app.use('/auth/callback', twitter.callback);
+app.use('/auth/logout', twitter.logout);
+app.use('/post', twitter.post);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

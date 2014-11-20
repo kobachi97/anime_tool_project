@@ -2,14 +2,22 @@
 
 //var express = require('express');
 //var router = express.Router();
+var twitter = require('twitter');
 
 var SECRET = {
   CONSUMER_KEY: 'ALZueUJtsc4fj9YgdaC8z0bzY',
   CONSUMER_SECRET: 'q1fnoONCR6odtH0pNJH8i0DiRRHEBfw8spqGBgfodwdGFzHQ3V',
   ACCESS_TOKEN: '2904817364-URl0TshHjns4P5Q9smpzWbVhJNI3EFbHxrikS8a',
   ACCESS_TOKEN_SECRET: 'is6WmiCxkFQRg9hXzNzBAMy54ugKqVNlRqjiGpsQjwEPq'
-
 };
+
+var twit = new twitter({
+  consumer_key: SECRET.CONSUMER_KEY,
+  consumer_secret: SECRET.CONSUMER_SECRET,
+  access_token_key: SECRET.ACCESS_TOKEN,
+  access_token_secret: SECRET.ACCESS_TOKEN_SECRET
+});
+
 
 var OAuth  = require('oauth').OAuth;
 var oa = new OAuth(
@@ -73,6 +81,16 @@ module.exports = {
   logout: function(req, res) {
     req.session.destroy();
     res.redirect('/login');
+  },
+  post: function(req, res) {
+    twit.updateStatus(req.body.tweet, function (err) {
+      if (err) {
+        console.log('too bad.' + JSON.stringify(err));
+      } else {
+        console.log('success!');
+      }
+      res.redirect('/');
+    });
   }
 };
 

@@ -56,7 +56,6 @@ router.get('/', function(req, res) {
           "q": '#ごちうさ'
         };
         twit.get('/search/tweets.json', {"q":"#ごちうさ", "count": 10}, function(tweet) {
-          console.log(tweet);
           tweetList = tweet;
         });
 //        twit.get('https://twitter.com/search?q=' + query.q + '&src=tyah&lang=ja', function(err, data) {
