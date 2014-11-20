@@ -3,6 +3,8 @@
 var express = require('express');
 var router = express.Router();
 var OAuth  = require('oauth').OAuth;
+var request = require("request");
+var async = require('Async');
 
 var SECRET = {
   CONSUMER_KEY: 'ALZueUJtsc4fj9YgdaC8z0bzY',
@@ -18,15 +20,40 @@ var oa = new OAuth(
   "http://localhost.com:3000/auth/twitter/callback",
   "HMAC-SHA1");
 
+var url = 'http://animemap.net/api/table/tokyo.json';
+var data;
+
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  console.log(req.session.oauth);
-  console.log(req.session.oauth.access_token);
   if(req.session.oauth && req.session.oauth.access_token) {
-    res.render('main', {
-      title: 'main'
-    });
+
+    async.series([
+      function(done){
+        request.get(url, function(err, res, body){
+          if(err || res.statusCode !== 200) {
+            console.log('ERROR!');
+          } else {
+            data = JSON.parse(body);
+          }
+        });
+        done(null);
+      },
+      function(done){
+        res.render('main', {
+          title: 'main',
+          data: data.response.item
+        });
+        done(null);
+      }
+    ]
+  , function(err, results){
+     console.log('ERROR');
+  });
+
+
+
+
   } else {
     console.log('oauth2');
     res.redirect("/login");
@@ -37,5 +64,6 @@ router.get('/', function(req, res) {
 //    screen_name: req.session.twitter.screen_name
 //  });
 });
+
 
 module.exports = router;

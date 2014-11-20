@@ -7,5 +7,21 @@
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+    <table>
+      <tr>
+        <th>タイトル</th>
+        <th>時間</th>
+        <th>次回</th>
+        <th>放送局</th>
+      </tr>
+        <% data.forEach(function(val){ %>
+          <tr>
+            <td><%= val.title %></td>
+            <td><%= val.time %></td>
+            <td><%= val.state %></td>
+            <td><%= val.station %></td>
+          </tr>
+        <% }) %>
+    </table>
   </body>
 </html>

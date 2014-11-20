@@ -1,7 +1,7 @@
 "use strict";
 
-var express = require('express');
-var router = express.Router();
+//var express = require('express');
+//var router = express.Router();
 
 var SECRET = {
   CONSUMER_KEY: 'ALZueUJtsc4fj9YgdaC8z0bzY',
@@ -42,8 +42,6 @@ module.exports = {
     console.log('ready');
     oa.getOAuthRequestToken(function (error, oauth_token, oauth_token_secret, results) {
       if (error) {
-        console.log('error');
-        console.log(results);
         res.send("yeah no. didn't work.");
       } else {
         console.log('complete');
@@ -71,28 +69,8 @@ module.exports = {
         }
       );
     } else
-      res.redirect('login');
+      res.redirect('/login');
   }
 };
 
-//var callback = function(req, res){
-//  console.log('callback');
-//  if (req.session.oauth) {
-//    req.session.oauth.verifier = req.query.oauth_verifier;
-//    var oauth = req.session.oauth;
-//    oa.getOAuthAccessToken(oauth.token, oauth.token_secret, oauth.verifier,
-//      function(error, oauth_access_token, oauth_access_token_secret, results){
-//        if (error){
-//          res.send("yeah something broke.");
-//        } else {
-//          req.session.oauth.access_token = oauth_access_token;
-//          req.session.oauth.access_token_secret = oauth_access_token_secret;
-//          req.session.twitter = results;
-//          res.redirect("/");
-//        }
-//      }
-//    );
-//  } else
-//    res.redirect('login');
-//  };
 

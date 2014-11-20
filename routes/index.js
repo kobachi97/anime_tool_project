@@ -2,7 +2,7 @@
 var routes = {
   main: require('./main'),
   login: require('./login'),
-  users: require('./users'),
+  users: require('./users')
 //  auth: require('./auth')
 };
 
