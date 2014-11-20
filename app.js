@@ -1,12 +1,19 @@
+"use strict";
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
+var OAuth  = require('oauth').OAuth;
+var session = require('express-session');
+var redisStore = require('connect-redis')(session);
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var routes = require('./routes');
+var auth = require('./routes/auth');
+//var users = require('./routes/users');
+var mysql = require('mysql');
 
 var app = express();
 
@@ -21,9 +28,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session(
+  {
+    secret: 'secret',
+    store: new redisStore({
+      host: '127.0.0.1',
+      port: 6379
+    })
+  }
+));
 
-app.use('/', routes);
-app.use('/users', users);
+app.use('/', routes.main);
+app.use('/users', routes.users);
+app.use('/login', routes.login);
+app.use('/auth/twitter', auth.auth);
+app.use('/auth/callback', auth.callback);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
