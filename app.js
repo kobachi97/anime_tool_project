@@ -12,8 +12,7 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes');
 var twitter = require('./routes/twitter');
-//var users = require('./routes/users');
-var mysql = require('mysql');
+var favorite = require('./routes/favorite');
 
 var app = express();
 
@@ -48,6 +47,7 @@ app.use('/auth/twitter', twitter.auth);
 app.use('/auth/callback', twitter.callback);
 app.use('/auth/logout', twitter.logout);
 app.use('/post', twitter.post);
+app.use('/favorite', favorite.favorite);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

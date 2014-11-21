@@ -1,16 +1,16 @@
+'use strict';
 
 var mysql = require('mysql');
 
-var connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'test_user',
-  password: 'test_password',
-  database: '79school_db'
-});
 
 var db = {
   getConnection: function() {
-
+    return mysql.createConnection({
+      host: 'localhost',
+      user: 'root',
+      password: 'admin',
+      database: '79school_db'
+    });
   }
 };
 

@@ -6,7 +6,8 @@ var OAuth  = require('oauth').OAuth;
 var request = require("request");
 var async = require('Async');
 var twitter = require('twitter');
-var db = require('../controller/db');
+var favoriteModel = require('../model/favorite');
+var _ = require('underscore');
 
 var SECRET = {
   CONSUMER_KEY: 'ALZueUJtsc4fj9YgdaC8z0bzY',
@@ -32,7 +33,8 @@ var oa = new OAuth(
   "HMAC-SHA1");
 
 var url = 'http://animemap.net/api/table/tokyo.json';
-var data;
+var animeData;
+var animeMap;
 var tweetList;
 var profile;
 
@@ -47,13 +49,9 @@ router.get('/', function(req, res) {
           if(err || res.statusCode !== 200) {
             console.log('ERROR!');
           } else {
-            data = JSON.parse(body);
+            animeData = JSON.parse(body).response.item;
           }
         });
-        done(null);
-      },
-      function(done) {
-
         done(null);
       },
 //        ハッシュ検索
@@ -64,10 +62,23 @@ router.get('/', function(req, res) {
 //        done(null);
 //      },
       function(done) {
-        console.log(req.session.twitter.user_id);
         twit.get('/users/show.json' , {"user_id":req.session.twitter.user_id}, function(userData) {
           profile = userData;
-          console.log(profile);
+        });
+        done(null);
+      },
+      function(done) {
+        favoriteModel.find(profile.id, function(err, result){
+          if (err) {
+            done(null);
+          }
+          animeMap = _.each(animeData, function(item) {
+            for (var i = 0; i < result.length; i++) {
+              if (item.title == result[i].title) {
+                item.favorite = true;
+              }
+            }
+          });
         });
         done(null);
       },
@@ -75,13 +86,13 @@ router.get('/', function(req, res) {
         res.render('main', {
           title: 'main',
           profile: profile,
-          data: data.response.item,
+          data: animeMap,
           tweetList: tweetList
         });
         done(null);
       }
     ]
-  , function(err, results){
+  , function(err){
      console.log(err);
   });
 

@@ -43,10 +43,14 @@
             <% } else { %>
             <td></td>
             <% } %>
-            <% if(val.state != 'onair') { %>
+            <% if(val.favorite) { %>
               <td>◯</td>
             <% } else { %>
-                <td><input type="button" value="追加"></td>
+              <form method="post" action="/favorite">
+                <td><input type="submit" value="追加!"></td>
+                <input type="hidden" value="<%= val.title %>" name ="title"/>
+                <input type="hidden" value="<%= profile.id %>" name ="id"/>
+              </form>
             <% } %>
             <td><%= val.station %></td>
           </tr>
@@ -67,7 +71,5 @@
   </body>
 </html>
 
-
-<!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.5.1.min.js">-->
 
 
