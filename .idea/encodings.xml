@@ -2,14 +2,20 @@
 <project version="4">
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
     <file url="file://$PROJECT_DIR$/app.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/controller/db.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/model/favorite.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/package.json" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/public/stylesheets/override.less" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/public/stylesheets/style.css" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/routes/index.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/routes/login.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/routes/main.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/routes/twitter.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/routes/users.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/views/layout.ejs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/views/login.ejs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/views/main.ejs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/views/side.ejs" charset="UTF-8" />
   </component>
 </project>
 

@@ -3,11 +3,23 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+      function createHash(e) {
+        var id = e.id;
+        var text = $('#tweet').val();
+        var addHash = text + ' #' + id;
+        $('#tweet').val(addHash);
+      }
+    </script>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <p><a href="/auth/logout">logout</a></p>
+
+
+    <div id="side">
+      <% layout('layout') -%>
+    </div>
 
     <div style="float: left">
     <table border="1">
@@ -16,50 +28,46 @@
         <th>時間</th>
         <th>次回</th>
         <th>曜日</th>
-        <th>本日放送</th>
-        <th>状態</th>
+        <th>本日</th>
+        <th>お気に入り</th>
         <th>放送局</th>
-        <th>全何話</th>
       </tr>
         <% data.forEach(function(val){ %>
           <tr>
-            <td><%= val.title %></td>
+            <td id="<%= val.title %>" onclick="createHash(this);"><%= val.title %></td>
             <td><%= val.time %></td>
             <td><%= val.next %></td>
             <td><%= val.week %></td>
             <% if(val.today == 1) { %>
-            <td>本日放送</td>
+            <td>◯</td>
             <% } else { %>
             <td></td>
             <% } %>
-            <% if(val.state == 'onair') { %>
-              <td>放送中</td>
+            <% if(val.state != 'onair') { %>
+              <td>◯</td>
             <% } else { %>
-              <td>放送中</td>
+                <td><input type="button" value="追加"></td>
             <% } %>
             <td><%= val.station %></td>
-
-
-
-            <td><%= val.episode %></td>
-
           </tr>
         <% }) %>
     </table>
     </div>
 
-    <form method="post" action="/post">
-      <textarea name="tweet" rows="4" cols="40"></textarea>
-      <input type="submit" value="tweet!">
-    </form>
-
     <!--Tweet表示部分-->
-    <div style="float: left; width: 200px">
+    <div id="twitter">
+      <form method="post" action="/post">
+        <textarea name="tweet" id="tweet" rows="4" cols="40"></textarea>
+        <input type="submit" value="tweet!">
+      </form>
 
       <a class="twitter-timeline" href="https://twitter.com/nekokonekonene" data-widget-id="535407375339884546">@nekokonekoneneさんのツイート</a>
       <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
     </div>
-
-
   </body>
 </html>
+
+
+<!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.5.1.min.js">-->
+
+

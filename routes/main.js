@@ -6,6 +6,7 @@ var OAuth  = require('oauth').OAuth;
 var request = require("request");
 var async = require('Async');
 var twitter = require('twitter');
+var db = require('../controller/db');
 
 var SECRET = {
   CONSUMER_KEY: 'ALZueUJtsc4fj9YgdaC8z0bzY',
@@ -33,6 +34,7 @@ var oa = new OAuth(
 var url = 'http://animemap.net/api/table/tokyo.json';
 var data;
 var tweetList;
+var profile;
 
 
 /* GET home page. */
@@ -40,7 +42,7 @@ router.get('/', function(req, res) {
   if(req.session.oauth && req.session.oauth.access_token) {
 
     async.series([
-      function(done){
+      function(done) {
         request.get(url, function(err, res, body){
           if(err || res.statusCode !== 200) {
             console.log('ERROR!');
@@ -50,28 +52,29 @@ router.get('/', function(req, res) {
         });
         done(null);
       },
-      function(done){
-        console.log('search');
-        var query = {
-          "q": '#ごちうさ'
-        };
-        twit.get('/search/tweets.json', {"q":"#ごちうさ", "count": 10}, function(tweet) {
-          tweetList = tweet;
-        });
-//        twit.get('https://twitter.com/search?q=' + query.q + '&src=tyah&lang=ja', function(err, data) {
-//            if(err) {
-//              console.log('search error');
-////              response.send('{"error": "search error"}');
-//            } else {
-//              tweetList = JSON.parse(data);
-//              console.log(data);
-//            }
+      function(done) {
+
+        done(null);
+      },
+//        ハッシュ検索
+//      function(done) {
+//        twit.get('/search/tweets.json', {"q":"#ごちうさ", "count": 10}, function(tweet) {
+//          tweetList = tweet;
 //        });
+//        done(null);
+//      },
+      function(done) {
+        console.log(req.session.twitter.user_id);
+        twit.get('/users/show.json' , {"user_id":req.session.twitter.user_id}, function(userData) {
+          profile = userData;
+          console.log(profile);
+        });
         done(null);
       },
       function(done){
         res.render('main', {
           title: 'main',
+          profile: profile,
           data: data.response.item,
           tweetList: tweetList
         });
@@ -79,14 +82,13 @@ router.get('/', function(req, res) {
       }
     ]
   , function(err, results){
-     console.log('ERROR');
+     console.log(err);
   });
 
 
 
 
   } else {
-    console.log('oauth2');
     res.redirect("/login");
   }
 

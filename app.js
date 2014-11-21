@@ -17,6 +17,9 @@ var mysql = require('mysql');
 
 var app = express();
 
+// use ejs-locals for all ejs templates:
+app.engine('ejs', require('ejs-locals'));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
