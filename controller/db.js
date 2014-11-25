@@ -2,7 +2,6 @@
 
 var mysql = require('mysql');
 
-
 var db = {
   getConnection: function() {
     return mysql.createConnection({

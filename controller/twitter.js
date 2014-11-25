@@ -1,8 +1,10 @@
 "use strict";
 
-//var express = require('express');
-//var router = express.Router();
 var twitter = require('twitter');
+var favoriteModel = require('../model/favorite');
+var animeController = require('../controller/anime');
+var _ = require('underscore');
+var async = require('Async');
 
 var SECRET = {
   CONSUMER_KEY: 'ALZueUJtsc4fj9YgdaC8z0bzY',
@@ -18,7 +20,6 @@ var twit = new twitter({
   access_token_secret: SECRET.ACCESS_TOKEN_SECRET
 });
 
-
 var OAuth  = require('oauth').OAuth;
 var oa = new OAuth(
   "https://twitter.com/oauth/request_token",
@@ -26,29 +27,12 @@ var oa = new OAuth(
   SECRET.CONSUMER_KEY,
   SECRET.CONSUMER_SECRET,
   "1.0",
-  "http://127.0.0.1:3000/auth/callback",
+  "http://127.0.0.1:3000/twitter/callback",
   "HMAC-SHA1");
-
-//router.get('/', function(req, res) {
-//  console.log('ready');
-//  oa.getOAuthRequestToken(function (error, oauth_token, oauth_token_secret, results) {
-//    if (error) {
-//      console.log('error');
-//      console.log(results);
-//      res.send("yeah no. didn't work.");
-//    } else {
-//      console.log('complete');
-//      req.session.oauth = {};
-//      req.session.oauth.token = oauth_token;
-//      res.redirect('https://twitter.com/oauth/authenticate?oauth_token=' + oauth_token);
-//    }
-//  });
-//});
 
 module.exports = {
   auth: function (req, res) {
-    console.log('ready');
-    oa.getOAuthRequestToken(function (error, oauth_token, oauth_token_secret, results) {
+    oa.getOAuthRequestToken(function (error, oauth_token) {
       if (error) {
         res.send("yeah no. didn't work.");
       } else {
@@ -59,7 +43,6 @@ module.exports = {
     });
   },
   callback: function (req, res) {
-    console.log('callback');
     if (req.session.oauth) {
       req.session.oauth.verifier = req.query.oauth_verifier;
       var oauth = req.session.oauth;
@@ -90,6 +73,51 @@ module.exports = {
         console.log('success!');
       }
       res.redirect('/');
+    });
+  },
+  reply: function(req, res) {
+
+    async.waterfall([
+      function (done) {
+        animeController.getAll(function(err, anime) {
+          var list = _.select(anime, function(val) {
+            return val.today === '1';
+          });
+          done(null, list);
+        });
+      },
+      function (animeData, done) {
+        favoriteModel.find(req.session.twitter.user_id, function (err, data) {
+          if (err) {
+            console.log('FIND ERROR+ ' + err);
+          } else {
+            var list = _.select(data, function (val) {
+              return _.include(_.pluck(animeData, 'title'), val.title);
+            });
+            done(null, list);
+          }
+        });
+      }
+    ], function (err, list) {
+      if (err) {
+        console.log('SEND REPLY ERROR ' + err);
+        res.redirect('favorite/view');
+      }
+      var tweet;
+
+      if (list.length > 0) {
+        tweet = '@' + req.session.twitter.screen_name + ' 今日は ';
+        _.each(list, function (val) {
+          tweet += '【' + val.title + '】 ';
+        });
+        tweet += 'の放送日です';
+      } else {
+        tweet = '本日放送のアニメはありません';
+      }
+
+      twit.updateStatus(tweet, function () {
+        res.redirect('/favorite/view');
+      });
     });
   }
 };

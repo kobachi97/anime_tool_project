@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= title %></title>
+  <title>ホーム</title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
   <!-- header scripts -->
 </head>
@@ -14,7 +14,10 @@
     <img src=" <%= profile.profile_image_url  %> " width="100px"/>
     <h1><%= profile.name %></h1>
     <h3>@<%= profile.screen_name %></h3>
-    <p><a href="/auth/logout">logout</a></p>
+    <p><a href="/twitter/logout">logout</a></p>
+    <p><a href="/">ホーム</a></p>
+
+    <p><a href="/favorite/view">お気に入り一覧</a></p>
   </div>
 
 </header>

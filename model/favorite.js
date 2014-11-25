@@ -14,26 +14,30 @@ var model = {
     });
   },
   find: function(userId, callback) {
-    var query = 'SELECT * FROM FAVORITE WHERE user_id =' + userId + ';';
+    var query = 'SELECT * FROM favorite WHERE user_id = ' + userId + ';';
     db.getConnection().query(query, function(err, data) {
       if(err) {
-        console.log(err);
+        console.log('FIND ' + err);
       } else {
         return callback(null, data);
       }
     });
   },
   insert: function(obj, callback) {
-    console.log('obj' + obj.user_id);
-    console.log('obj' + obj.title);
     var query = 'INSERT FAVORITE SET ' +
       'user_id = ?, ' +
       'title = ?, ' +
+      'time = ?, ' +
+      'week = ?, ' +
+      'station = ?, ' +
       'createdAt = ?, ' +
       'updatedAt = ?;';
     var params = [
       obj.user_id,
       obj.title,
+      obj.time,
+      obj.week,
+      obj.station,
       dt,
       dt
     ];
@@ -61,6 +65,16 @@ var model = {
     db.getConnection().query(query, params, function(err) {
       if (err) {
         return callback(err);
+      }
+    });
+  },
+  remove: function(obj, callback) {
+    var query = 'DELETE FROM favorite WHERE user_id = ' + obj.user_id + ' AND title = "' + obj.title + '";';
+    db.getConnection().query(query, function(err, data) {
+      if(err) {
+        console.log('DELETE ' + err);
+      } else {
+        return callback(null, data);
       }
     });
   }

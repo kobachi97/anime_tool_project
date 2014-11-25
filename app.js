@@ -2,17 +2,11 @@
 
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
-var OAuth  = require('oauth').OAuth;
 var session = require('express-session');
 var redisStore = require('connect-redis')(session);
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-var routes = require('./routes');
-var twitter = require('./routes/twitter');
-var favorite = require('./routes/favorite');
 
 var app = express();
 
@@ -40,14 +34,13 @@ app.use(session(
   }
 ));
 
-app.use('/', routes.main);
-app.use('/users', routes.users);
-app.use('/login', routes.login);
-app.use('/auth/twitter', twitter.auth);
-app.use('/auth/callback', twitter.callback);
-app.use('/auth/logout', twitter.logout);
-app.use('/post', twitter.post);
-app.use('/favorite', favorite.favorite);
+var controller = {};
+controller.main  = require('./controller/main.js');
+controller.login  = require('./controller/login.js');
+controller.twitter  = require('./controller/twitter.js');
+controller.favorite  = require('./controller/favorite.js');
+
+require('./routes/index.js')(app, controller);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
