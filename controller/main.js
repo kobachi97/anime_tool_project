@@ -1,6 +1,5 @@
 "use strict";
 
-var request = require("request");
 var async = require('Async');
 var twitter = require('twitter');
 var favoriteModel = require('../model/favorite');
@@ -31,53 +30,46 @@ module.exports = {
     if (req.session.oauth && req.session.oauth.access_token) {
 
       async.series([
-          function (done) {
-            animeController.getAll(function(err, data) {
-              animeData = data;
-              done(null);
-            });
-          },
-//        ハッシュ検索※現在未使用
-//      function(done) {
-//        twit.get('/search/tweets.json', {"q":"#ごちうさ", "count": 10}, function(tweet) {
-//          tweetList = tweet;
-//        });
-//        done(null);
-//      },
-          function (done) {
-            twit.get('/users/show.json', {"user_id": req.session.twitter.user_id}, function (userData) {
-              profile = userData;
-              done(null);
-            });
-          },
-          function (done) {
-            favoriteModel.find(profile.id, function (err, result) {
-              if (err) {
-                done(err);
-              }
-              animeMap = _.each(animeData, function (item) {
-                for (var i = 0; i < result.length; i++) {
-                  if (item.title == result[i].title) {
-                    item.favorite = true;
-                  }
+        function (done) {
+          animeController.getAll(function(err, data) {
+            animeData = data;
+            done(null);
+          });
+        },
+        function (done) {
+          twit.get('/users/show.json', {"user_id": req.session.twitter.user_id}, function (userData) {
+            profile = userData;
+            done(null);
+          });
+        },
+        function (done) {
+          favoriteModel.find(profile.id, function (err, result) {
+            if (err) {
+              done(err);
+            }
+            animeMap = _.each(animeData, function (item) {
+              for (var i = 0; i < result.length; i++) {
+                if (item.title == result[i].title) {
+                  item.favorite = true;
                 }
-              });
-              done(null);
+              }
             });
-          }
-        ]
-        , function (err) {
-          if (err) {
-            console.log(err);
-          } else {
-            res.render('main', {
-              title: 'main',
-              profile: profile,
-              data: animeMap,
-              tweetList: tweetList
-            });
-          }
-        });
+            done(null);
+          });
+        }
+      ]
+      , function (err) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.render('main', {
+            title: 'main',
+            profile: profile,
+            data: animeMap,
+            tweetList: tweetList
+          });
+        }
+      });
     } else {
       res.redirect("/login");
     }

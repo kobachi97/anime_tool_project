@@ -24,19 +24,30 @@ var profile;
 
 module.exports = {
   register: function(req, res) {
-    var data = new FavoriteObj(req.body.id, req.body.title, req.body.time, req.body.week, req.body.station);
+    var data = new FavoriteObj(req.body.user_id, req.body.title, req.body.time, req.body.week, req.body.station);
     favoriteModel.insert(data, function(err) {
       if (err) {
         console.log('INSERT ERROR ' + err);
+        res.redirect("/error");
+      } else {
+        res.redirect("/");
       }
     });
-    res.redirect("/");
   },
   view: function(req, res) {
 
+    var user_id;
+    if(req.session.twitter) {
+      user_id = req.session.twitter.user_id;
+    } else {
+      user_id = req.body.user_id;
+    }
+
+    console.log('BODY ' + req.session.twitter);
+
     async.series([
       function(done) {
-        favoriteModel.find(req.session.twitter.user_id, function(err, data) {
+        favoriteModel.find(user_id, function(err, data) {
           if (err) {
             console.log('FIND ERROR+ ' + err);
           } else {
@@ -46,7 +57,7 @@ module.exports = {
         });
       },
       function(done) {
-        twit.get('/users/show.json' , {"user_id":req.session.twitter.user_id}, function(userData) {
+        twit.get('/users/show.json' , {"user_id":user_id}, function(userData) {
           profile = userData;
           done(null);
         });
@@ -64,13 +75,17 @@ module.exports = {
     });
   },
   remove: function(req, res) {
-    var data = new FavoriteObj(req.body.id, req.body.title);
+    var data = new FavoriteObj(req.body.user_id, req.body.title, null, null, null);
     favoriteModel.remove(data, function(err) {
       if (err) {
         console.log('DELETE ERROR ' + err);
+        res.redirect("/err");
+      } else {
+        req.session.user_id = req.body.user_id;
+        res.redirect("/favorite/view");
       }
     });
-    res.redirect("/favorite/view");
+
   }
 };
 

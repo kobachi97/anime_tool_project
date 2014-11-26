@@ -15,6 +15,8 @@ var model = {
   },
   find: function(userId, callback) {
     var query = 'SELECT * FROM favorite WHERE user_id = ' + userId + ';';
+
+    console.log(query);
     db.getConnection().query(query, function(err, data) {
       if(err) {
         console.log('FIND ' + err);
@@ -44,6 +46,8 @@ var model = {
     db.getConnection().query(query, params, function(err) {
       if (err) {
         return callback(err);
+      } else {
+        return callback(null);
       }
     });
   },
@@ -70,11 +74,12 @@ var model = {
   },
   remove: function(obj, callback) {
     var query = 'DELETE FROM favorite WHERE user_id = ' + obj.user_id + ' AND title = "' + obj.title + '";';
-    db.getConnection().query(query, function(err, data) {
+    db.getConnection().query(query, function(err) {
       if(err) {
         console.log('DELETE ' + err);
+        return callback(err);
       } else {
-        return callback(null, data);
+        return callback(null);
       }
     });
   }

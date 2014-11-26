@@ -36,7 +36,7 @@
         <form method="post" action="/favorite/delete">
           <td class="center"><input type="submit" value="削除"></td>
           <input type="hidden" value="<%= val.title %>" name ="title"/>
-          <input type="hidden" value="<%= profile.id %>" name ="id"/>
+          <input type="hidden" value="<%= profile.id %>" name ="user_id"/>
         </form>
         <td><%= val.station %></td>
       </tr>

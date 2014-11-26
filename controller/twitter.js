@@ -32,25 +32,32 @@ var oa = new OAuth(
 
 module.exports = {
   auth: function (req, res) {
-    oa.getOAuthRequestToken(function (error, oauth_token) {
+    console.log(req.session);
+    oa.getOAuthRequestToken(function (error, oauth_token, oauth_token_secret) {
       if (error) {
         res.send("yeah no. didn't work.");
       } else {
         req.session.oauth = {};
         req.session.oauth.token = oauth_token;
+        req.session.oauth.token_secret = oauth_token_secret;
+        console.log(req);
         res.redirect('https://twitter.com/oauth/authenticate?oauth_token=' + oauth_token);
       }
     });
   },
   callback: function (req, res) {
+    console.log(req.session);
     if (req.session.oauth) {
       req.session.oauth.verifier = req.query.oauth_verifier;
       var oauth = req.session.oauth;
+      console.log(req.session.oauth.verifier);
+      console.log(req.session.oauth);
       oa.getOAuthAccessToken(oauth.token, oauth.token_secret, oauth.verifier,
         function (error, oauth_access_token, oauth_access_token_secret, results) {
           if (error) {
             res.send("yeah something broke.");
           } else {
+            console.log('auth!!');
             req.session.oauth.access_token = oauth_access_token;
             req.session.oauth.access_token_secret = oauth_access_token_secret;
             req.session.twitter = results;
