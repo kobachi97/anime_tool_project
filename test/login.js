@@ -3,7 +3,7 @@
 var should = require('should');
 var superAgent = require('superagent');
 
-describe('@main', function() {
+describe('@login', function() {
 
   var testUser = superAgent.agent();
   before(function(done) {
@@ -12,9 +12,9 @@ describe('@main', function() {
     });
   });
 
-  it('/ get main view', function(done) {
+  it('/login ', function(done) {
     testUser.get('http://127.0.0.1:3000/').end(function(res) {
-      should.equal(res.statusCode, 200);
+      should.equal(res.redirects.pop(), 'http://127.0.0.1:3000/login');
       done();
     });
   });

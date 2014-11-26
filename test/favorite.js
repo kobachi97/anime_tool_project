@@ -1,13 +1,13 @@
 'use strict';
 
 var should = require('should');
-var sperAgent = require('superagent');
+var superAgent = require('superagent');
 
 describe('@favorite', function() {
 
-  var testUser = sperAgent.agent();
+  var testUser = superAgent.agent();
   before(function(done) {
-    testUser.get('http://127.0.0.1:3000/test/login').send({'user_id': 2904817364}).end(function (res) {
+    testUser.get('http://127.0.0.1:3000/test/login').send({'user_id': 2904817364, 'screen_name': 'nekokonekonene'}).end(function (res) {
       done();
     });
   });

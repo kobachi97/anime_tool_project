@@ -89,41 +89,47 @@ module.exports = {
         });
       },
       function (animeData, done) {
-        favoriteModel.find(req.session.twitter.user_id, function (err, data) {
-          if (err) {
-            done(err);
-          } else {
-            var list = _.select(data, function (val) {
-              return _.include(_.pluck(animeData, 'title'), val.title);
-            });
-            done(null, list);
-          }
-        });
+        if (!req.session.twitter.user_id) {
+          done('user_id is null');
+        } else {
+          favoriteModel.find(req.session.twitter.user_id, function (err, data) {
+            if (err) {
+              done(err);
+            } else {
+              var list = _.select(data, function (val) {
+                return _.include(_.pluck(animeData, 'title'), val.title);
+              });
+              done(null, list);
+            }
+          });
+        }
       }
     ], function (err, list) {
       if (err) {
         res.send('{"error": "SEND REPLY ERROR"}');
-      }
-      var tweet;
-
-      if (list.length > 0) {
-        tweet = '@' + req.session.twitter.screen_name + ' 今日は ';
-        _.each(list, function (val) {
-          tweet += '【' + val.title + '】 ';
-        });
-        tweet += 'の放送日です';
       } else {
-        tweet = '本日放送のアニメはありません';
-      }
+        var tweet;
 
-      twit.updateStatus(tweet, function () {
-        res.redirect('/favorite/view');
-      });
+        if (list.length > 0) {
+          tweet = '@' + req.session.twitter.screen_name + ' 今日は ';
+          _.each(list, function (val) {
+            tweet += '【' + val.title + '】 ';
+          });
+          tweet += 'の放送日です';
+        } else {
+          tweet = '本日放送のアニメはありません';
+        }
+
+        twit.updateStatus(tweet, function () {
+          res.redirect('/favorite/view');
+        });
+      }
     });
   },
   testLogin: function(req, res) {
     req.session.twitter = {};
     req.session.twitter.user_id = req.body.user_id;
+    req.session.twitter.screen_name = req.body.screen_name;
     res.redirect("/");
   }
 };
