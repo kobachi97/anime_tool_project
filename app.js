@@ -4,6 +4,7 @@ var express = require('express');
 var path = require('path');
 var session = require('express-session');
 var redisStore = require('connect-redis')(session);
+var sessionStore = new redisStore();
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -34,11 +35,14 @@ app.use(session(
   }
 ));
 
+//app.set('sessionStore', sessionStore);
+
 var controller = {};
 controller.main  = require('./controller/main.js');
 controller.login  = require('./controller/login.js');
 controller.twitter  = require('./controller/twitter.js');
 controller.favorite  = require('./controller/favorite.js');
+controller.error  = require('./controller/error.js');
 
 require('./routes/index.js')(app, controller);
 

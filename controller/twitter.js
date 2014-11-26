@@ -32,7 +32,6 @@ var oa = new OAuth(
 
 module.exports = {
   auth: function (req, res) {
-    console.log(req.session);
     oa.getOAuthRequestToken(function (error, oauth_token, oauth_token_secret) {
       if (error) {
         res.send("yeah no. didn't work.");
@@ -50,14 +49,11 @@ module.exports = {
     if (req.session.oauth) {
       req.session.oauth.verifier = req.query.oauth_verifier;
       var oauth = req.session.oauth;
-      console.log(req.session.oauth.verifier);
-      console.log(req.session.oauth);
       oa.getOAuthAccessToken(oauth.token, oauth.token_secret, oauth.verifier,
         function (error, oauth_access_token, oauth_access_token_secret, results) {
           if (error) {
             res.send("yeah something broke.");
           } else {
-            console.log('auth!!');
             req.session.oauth.access_token = oauth_access_token;
             req.session.oauth.access_token_secret = oauth_access_token_secret;
             req.session.twitter = results;
@@ -73,13 +69,12 @@ module.exports = {
     res.redirect('/login');
   },
   post: function(req, res) {
-    twit.updateStatus(req.body.tweet, function (err) {
-      if (err) {
-        console.log('too bad.' + JSON.stringify(err));
+    twit.updateStatus(req.body.tweet, function(err, data) {
+      if(err.statusCode === 403) {
+        res.send('{"error": "TWEET SEND ERROR"}');
       } else {
-        console.log('success!');
+        res.redirect('/');
       }
-      res.redirect('/');
     });
   },
   reply: function(req, res) {
@@ -96,7 +91,7 @@ module.exports = {
       function (animeData, done) {
         favoriteModel.find(req.session.twitter.user_id, function (err, data) {
           if (err) {
-            console.log('FIND ERROR+ ' + err);
+            done(err);
           } else {
             var list = _.select(data, function (val) {
               return _.include(_.pluck(animeData, 'title'), val.title);
@@ -107,8 +102,7 @@ module.exports = {
       }
     ], function (err, list) {
       if (err) {
-        console.log('SEND REPLY ERROR ' + err);
-        res.redirect('favorite/view');
+        res.send('{"error": "SEND REPLY ERROR"}');
       }
       var tweet;
 
@@ -126,6 +120,11 @@ module.exports = {
         res.redirect('/favorite/view');
       });
     });
+  },
+  testLogin: function(req, res) {
+    req.session.twitter = {};
+    req.session.twitter.user_id = req.body.user_id;
+    res.redirect("/");
   }
 };
 

@@ -12,6 +12,7 @@ var routes = function(app, controller) {
   app.post('/favorite/delete', controller.favorite.remove);
   app.post('/favorite/reply', controller.twitter.reply);
   app.get('/error', controller.error.error);
+  app.get('/test/login', controller.twitter.testLogin);
 };
 
 module.exports = routes;

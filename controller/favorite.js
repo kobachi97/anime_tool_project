@@ -27,8 +27,7 @@ module.exports = {
     var data = new FavoriteObj(req.body.user_id, req.body.title, req.body.time, req.body.week, req.body.station);
     favoriteModel.insert(data, function(err) {
       if (err) {
-        console.log('INSERT ERROR ' + err);
-        res.redirect("/error");
+        res.send('{"error": "INSERT ERROR"}');
       } else {
         res.redirect("/");
       }
@@ -36,20 +35,11 @@ module.exports = {
   },
   view: function(req, res) {
 
-    var user_id;
-    if(req.session.twitter) {
-      user_id = req.session.twitter.user_id;
-    } else {
-      user_id = req.body.user_id;
-    }
-
-    console.log('BODY ' + req.session.twitter);
-
     async.series([
       function(done) {
-        favoriteModel.find(user_id, function(err, data) {
+        favoriteModel.find(req.session.twitter.user_id, function(err, data) {
           if (err) {
-            console.log('FIND ERROR+ ' + err);
+            res.send('{"error": "FIND ERROR"}');
           } else {
             favoriteList = data;
             done();
@@ -57,15 +47,14 @@ module.exports = {
         });
       },
       function(done) {
-        twit.get('/users/show.json' , {"user_id":user_id}, function(userData) {
+        twit.get('/users/show.json' , {"user_id":req.session.twitter.user_id}, function(userData) {
           profile = userData;
           done(null);
         });
       }
     ], function(err) {
       if (err) {
-        console.log('FAVORITE VIEW ERROR' + err);
-        res.redirect('/');
+        res.send('{"error": "FAVORITE VIEW ERROR"}');
       } else {
         res.render('favorite', {
           data: favoriteList,
@@ -78,14 +67,11 @@ module.exports = {
     var data = new FavoriteObj(req.body.user_id, req.body.title, null, null, null);
     favoriteModel.remove(data, function(err) {
       if (err) {
-        console.log('DELETE ERROR ' + err);
-        res.redirect("/err");
+        res.send('{"error": "DELETE ERROR"}');
       } else {
-        req.session.user_id = req.body.user_id;
         res.redirect("/favorite/view");
       }
     });
-
   }
 };
 

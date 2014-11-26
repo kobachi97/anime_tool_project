@@ -15,8 +15,6 @@ var model = {
   },
   find: function(userId, callback) {
     var query = 'SELECT * FROM favorite WHERE user_id = ' + userId + ';';
-
-    console.log(query);
     db.getConnection().query(query, function(err, data) {
       if(err) {
         console.log('FIND ' + err);

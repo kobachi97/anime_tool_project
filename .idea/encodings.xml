@@ -4,6 +4,7 @@
     <file url="file://$PROJECT_DIR$/app.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/controller/anime.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/controller/db.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/controller/error.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/controller/favorite.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/controller/login.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/controller/main.js" charset="UTF-8" />
@@ -11,12 +12,11 @@
     <file url="file://$PROJECT_DIR$/model/favorite.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/package.json" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/public/stylesheets/style.css" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/routes/favorite.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/routes/index.js" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/routes/login.js" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/routes/main.js" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/routes/twitter.js" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/routes/users.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test/favorite.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test/main.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test/twitter.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/views/error.ejs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/views/favorite.ejs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/views/layout.ejs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/views/login.ejs" charset="UTF-8" />
