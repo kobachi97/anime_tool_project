@@ -55,7 +55,6 @@ describe('@twitter', function() {
     async.series([
       function(done) {
         invalidUser.get('http://127.0.0.1:3000/test/login').send({'user_id': null}).end(function(res) {
-          console.log('TEST');
           done();
         });
       },

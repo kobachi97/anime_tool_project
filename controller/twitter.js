@@ -39,13 +39,11 @@ module.exports = {
         req.session.oauth = {};
         req.session.oauth.token = oauth_token;
         req.session.oauth.token_secret = oauth_token_secret;
-        console.log(req);
         res.redirect('https://twitter.com/oauth/authenticate?oauth_token=' + oauth_token);
       }
     });
   },
   callback: function (req, res) {
-    console.log(req.session);
     if (req.session.oauth) {
       req.session.oauth.verifier = req.query.oauth_verifier;
       var oauth = req.session.oauth;
