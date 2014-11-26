@@ -3,6 +3,7 @@
 var async = require('Async');
 var twitter = require('twitter');
 var favoriteModel = require('../model/favorite');
+var twitterController = require('../controller/twitter');
 var animeController = require('../controller/anime');
 var _ = require('underscore');
 
@@ -22,8 +23,8 @@ var twit = new twitter({
 
 var animeData;
 var animeMap;
-var tweetList;
 var profile;
+var tweetList;
 
 module.exports = {
   index: function(req, res) {
@@ -43,16 +44,22 @@ module.exports = {
           });
         },
         function (done) {
+          twitterController.getTimeline(function(err, result) {
+            if (err){
+              done(err);
+            } else {
+              tweetList = result;
+              done(null);
+            }
+          });
+        },
+        function (done) {
           favoriteModel.find(profile.id, function (err, result) {
             if (err) {
               done(err);
             }
             animeMap = _.each(animeData, function (item) {
-              for (var i = 0; i < result.length; i++) {
-                if (item.title == result[i].title) {
-                  item.favorite = true;
-                }
-              }
+              item.favorite = _.include(_.pluck(result, 'title'), item.title);
             });
             done(null);
           });

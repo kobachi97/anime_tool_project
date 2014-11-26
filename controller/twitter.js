@@ -69,7 +69,9 @@ module.exports = {
   post: function(req, res) {
     twit.updateStatus(req.body.tweet, function(err, data) {
       if(err.statusCode === 403) {
-        res.send('{"error": "TWEET SEND ERROR"}');
+        var error = JSON.parse(err.data).errors;
+        console.log(error[0].message);
+        res.send('{"error": "' + error[0].message + '"}');
       } else {
         res.redirect('/');
       }
@@ -129,6 +131,11 @@ module.exports = {
     req.session.twitter.user_id = req.body.user_id;
     req.session.twitter.screen_name = req.body.screen_name;
     res.redirect("/");
+  },
+  getTimeline: function(done) {
+    twit.get('/statuses/home_timeline.json', {include_entities:true}, function(data) {
+      done(null, data);
+    });
   }
 };
 

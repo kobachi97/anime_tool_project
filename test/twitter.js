@@ -22,10 +22,18 @@ describe('@twitter', function() {
     });
   });
 
+  it('twitter/post duplicate', function(done) {
+    var tweet = 'test';
+    testUser.post('http://127.0.0.1:3000/twitter/post').send({'tweet': tweet}).end(function(res) {
+      should.equal(JSON.parse(res.text).error, 'Status is a duplicate.');
+      done();
+    });
+  });
+
   it('twitter/post tweet is null', function(done) {
     var tweet = null;
     testUser.post('http://127.0.0.1:3000/twitter/post').send({'tweet': tweet}).end(function(res) {
-      should.equal(JSON.parse(res.text).error, 'TWEET SEND ERROR');
+      should.equal(JSON.parse(res.text).error, 'Missing required parameter: status.');
       done();
     });
   });
@@ -37,7 +45,7 @@ describe('@twitter', function() {
                 'ああああああああああああああああああああああああああああああああああああ';
 
     testUser.post('http://127.0.0.1:3000/twitter/post').send({'tweet': tweet}).end(function(res) {
-      should.equal(JSON.parse(res.text).error, 'TWEET SEND ERROR');
+      should.equal(JSON.parse(res.text).error, 'Status is over 140 characters.');
       done();
     });
   });
