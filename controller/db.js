@@ -5,10 +5,10 @@ var mysql = require('mysql');
 var db = {
   getConnection: function() {
     return mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: 'admin',
-      database: '79school_db'
+      host: 'ホスト名',
+      user: 'ユーザー',
+      password: 'パスワード',
+      database: 'DB名'
     });
   }
 };

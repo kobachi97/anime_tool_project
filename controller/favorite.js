@@ -6,8 +6,8 @@ var twitter = require('twitter');
 var twitterController = require('../controller/twitter');
 
 var SECRET = {
-  CONSUMER_KEY: 'ALZueUJtsc4fj9YgdaC8z0bzY',
-  CONSUMER_SECRET: 'q1fnoONCR6odtH0pNJH8i0DiRRHEBfw8spqGBgfodwdGFzHQ3V',
+  CONSUMER_KEY: 'your consumer key',
+  CONSUMER_SECRET: 'your consumer secret key',
   ACCESS_TOKEN: '2904817364-URl0TshHjns4P5Q9smpzWbVhJNI3EFbHxrikS8a',
   ACCESS_TOKEN_SECRET: 'is6WmiCxkFQRg9hXzNzBAMy54ugKqVNlRqjiGpsQjwEPq'
 };
