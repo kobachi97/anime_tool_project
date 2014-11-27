@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>ホーム</title>
+  <title>ANIMAIL</title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
   <!-- header scripts -->
 </head>
@@ -9,7 +9,6 @@
 
 <header >
 
-  <!--<div style="float: left">-->
   <div class="sideMenu">
     <img src=" <%= profile.profile_image_url  %> " width="100px; "/>
     <h1 class="userName"><%= profile.name %></h1>
@@ -17,6 +16,7 @@
 
     <div class="linkBox"><a href="/"></a><h1>HOME</h1></div>
     <div class="linkBox"><a href="/favorite/view"></a><h1>FAVORITE</h1></div>
+    <div class="linkBox"><a href="/ranking/view"></a><h1>RANKING</h1></div>
     <div class="linkBox"><a href="/twitter/logout"></a><h1>LOGOUT</h1></div>
   </div>
 

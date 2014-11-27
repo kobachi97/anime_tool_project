@@ -80,7 +80,17 @@ var model = {
         return callback(null);
       }
     });
-  }
+  },
+  selectRanking: function(callback) {
+    var query = 'SELECT COUNT(title),title FROM favorite GROUP BY title;';
+    db.getConnection().query(query, function(err, data) {
+      if(err) {
+        console.log('RANKING ' + err);
+      } else {
+        return callback(null, data);
+      }
+    });
+  },
 };
 
 

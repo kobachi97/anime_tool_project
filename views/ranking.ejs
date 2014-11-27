@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RANKING</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  </head>
+  <body>
+
+    <div id="side">
+      <% layout('layout') -%>
+    </div>
+
+    <div class="animeTable">
+      <table class="animeList">
+        <thead>
+          <tr>
+            <th>順位</th>
+            <th>タイトル</th>
+            <th>登録数</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% ranking.forEach(function(val){ %>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+  </body>
+</html>
