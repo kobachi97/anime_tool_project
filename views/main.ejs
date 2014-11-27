@@ -18,33 +18,36 @@
     <div id="side">
       <% layout('layout') -%>
     </div>
-    <div style="float: left">
-    <table border="1">
+    <div class="animeTable">
+    <table class="animeList">
+      <thead>
       <tr>
         <th>タイトル</th>
         <th>時間</th>
         <th>次回</th>
         <th>曜日</th>
-        <th>本日</th>
+        <!--<th>本日</th>-->
         <th>お気に入り</th>
         <th>放送局</th>
       </tr>
+      </thead>
+      <tbody>
         <% data.forEach(function(val){ %>
           <tr>
-            <td id="<%= val.title %>" onclick="createHash(this);"><%= val.title %></td>
+            <td id="<%= val.title %>" onclick="createHash(this);">
+              <p style="display: inline"><%= val.title %></p>
+              <% if(val.today == 1) { %>
+                <p class="today">(本日放送)</p>
+              <% } %>
+            </td>
             <td><%= val.time %></td>
             <td><%= val.next %></td>
             <td><%= val.week %></td>
-            <% if(val.today == 1) { %>
-            <td class="center">◯</td>
-            <% } else { %>
-            <td></td>
-            <% } %>
             <% if(val.favorite) { %>
-              <td class="center">◯</td>
+              <td class="center"><input type="submit" value="登録済" class="favoriteBtn" disabled></td>
             <% } else { %>
               <form method="post" action="/favorite/register">
-                <td class="center"><input type="submit" value="追加"></td>
+                <td class="center"><input type="submit" value="追加" class="btn"></td>
                 <input type="hidden" value="<%= val.title %>" name ="title"/>
                 <input type="hidden" value="<%= profile.id %>" name ="user_id"/>
                 <input type="hidden" value="<%= val.time %>" name ="time"/>
@@ -55,6 +58,7 @@
             <td><%= val.station %></td>
           </tr>
         <% }) %>
+      </tbody>
     </table>
     </div>
 
@@ -62,25 +66,38 @@
     <div id="twitter">
       <form method="post" action="/twitter/post">
         <textarea name="tweet" id="tweet" rows="4" cols="33"></textarea>
-        <input type="submit" value="tweet!">
+        <input type="submit" value="tweet" class="tweetbtn">
       </form>
 
 
 
-      <table class="tweetArea" >
-        <tr>
-          <th>Tweet</th>
+      <div class="scroll">
+      <table class="tweetArea">
+        <tr style="height: 20px;">
+          <th class="header"></th>
         </tr>
-        <div class="scroll">
+
           <% tweetList.forEach(function(tweet){ %>
             <tr>
-              <td class="tweet"><%= tweet.text %></td>
+              <td class="tweet">
+                <div class="profile">
+                <div class="image">
+                  <img src=" <%= profile.profile_image_url  %> " width="30px; "/>
+                </div>
+                <div class="screen_name">
+                  <p class="inner"><%= profile.name %></p>
+                </div>
+                </div>
+                  <div>
+                <%= tweet.text %>
+                    </div>
+
+              </td>
 
             </tr>
         <% }) %>
-          </div>
-
       </table>
+      </div>
 
       <!--<a class="twitter-timeline" href="https://twitter.com/nekokonekonene" data-widget-id="535407375339884546">@nekokonekoneneさんのツイート</a>-->
       <!--<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>-->

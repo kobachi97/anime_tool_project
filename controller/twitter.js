@@ -55,6 +55,7 @@ module.exports = {
             req.session.oauth.access_token = oauth_access_token;
             req.session.oauth.access_token_secret = oauth_access_token_secret;
             req.session.twitter = results;
+            console.log(req.session.twitter);
             res.redirect("/");
           }
         }
@@ -132,8 +133,10 @@ module.exports = {
     req.session.twitter.screen_name = req.body.screen_name;
     res.redirect("/");
   },
-  getTimeline: function(done) {
-    twit.get('/statuses/home_timeline.json', {include_entities:true}, function(data) {
+  getTimeline: function(req, done) {
+    console.log(req.session.twitter.user_id);
+    twit.get('/statuses/user_timeline.json', {user_id: req.session.twitter.user_id, include_entities:true}, function(data) {
+      console.log(data);
       done(null, data);
     });
   }

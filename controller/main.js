@@ -44,7 +44,7 @@ module.exports = {
           });
         },
         function (done) {
-          twitterController.getTimeline(function(err, result) {
+          twitterController.getTimeline(req, function(err, result) {
             if (err){
               done(err);
             } else {
@@ -54,7 +54,7 @@ module.exports = {
           });
         },
         function (done) {
-          favoriteModel.find(profile.id, function (err, result) {
+          favoriteModel.find(req.session.twitter.user_id, function (err, result) {
             if (err) {
               done(err);
             }
@@ -64,8 +64,7 @@ module.exports = {
             done(null);
           });
         }
-      ]
-      , function (err) {
+      ], function (err) {
         if (err) {
           console.log(err);
         } else {

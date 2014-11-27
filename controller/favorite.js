@@ -3,6 +3,7 @@
 var favoriteModel = require('../model/favorite');
 var async = require('Async');
 var twitter = require('twitter');
+var twitterController = require('../controller/twitter');
 
 var SECRET = {
   CONSUMER_KEY: 'ALZueUJtsc4fj9YgdaC8z0bzY',
@@ -21,6 +22,7 @@ var twit = new twitter({
 
 var favoriteList;
 var profile;
+var tweetList;
 
 module.exports = {
   register: function(req, res) {
@@ -51,6 +53,16 @@ module.exports = {
           profile = userData;
           done(null);
         });
+      },
+      function (done) {
+        twitterController.getTimeline(req, function(err, result) {
+          if (err){
+            done(err);
+          } else {
+            tweetList = result;
+            done(null);
+          }
+        });
       }
     ], function(err) {
       if (err) {
@@ -58,7 +70,8 @@ module.exports = {
       } else {
         res.render('favorite', {
           data: favoriteList,
-          profile: profile
+          profile: profile,
+          tweetList: tweetList
         });
       }
     });
