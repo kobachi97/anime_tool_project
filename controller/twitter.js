@@ -55,13 +55,13 @@ module.exports = {
             req.session.oauth.access_token = oauth_access_token;
             req.session.oauth.access_token_secret = oauth_access_token_secret;
             req.session.twitter = results;
-            console.log(req.session.twitter);
             res.redirect("/");
           }
         }
       );
-    } else
+    } else {
       res.redirect('/login');
+    }
   },
   logout: function(req, res) {
     req.session.destroy();
@@ -71,7 +71,6 @@ module.exports = {
     twit.updateStatus(req.body.tweet, function(err, data) {
       if(err.statusCode === 403) {
         var error = JSON.parse(err.data).errors;
-        console.log(error[0].message);
         res.send('{"error": "' + error[0].message + '"}');
       } else {
         res.redirect('/');
@@ -134,9 +133,7 @@ module.exports = {
     res.redirect("/");
   },
   getTimeline: function(req, done) {
-    console.log(req.session.twitter.user_id);
     twit.get('/statuses/user_timeline.json', {user_id: req.session.twitter.user_id, include_entities:true}, function(data) {
-      console.log(data);
       done(null, data);
     });
   }

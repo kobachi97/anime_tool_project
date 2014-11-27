@@ -1,99 +1,90 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>お気に入り</title>
-  <link rel='stylesheet' href='/stylesheets/style.css' />
-  <meta http-equiv="Content-Script-Type" content="text/javascript" />
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script>
-    function createHash(e) {
-      var id = e.id;
-      var text = $('#tweet').val();
-      var addHash = text + ' #' + id;
-      $('#tweet').val(addHash);
-    }
-  </script>
-</head>
-<body>
+  <head>
+    <title>お気に入り</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+      function createHash(e) {
+        var id = e.id;
+        var text = $('#tweet').val();
+        var addHash = text + ' #' + id;
+        $('#tweet').val(addHash);
+      }
+    </script>
+  </head>
+  <body>
 
-<div id="side">
-  <% layout('layout') -%>
-</div>
-<!--<h1>お気に入り</h1>-->
+    <div id="side">
+      <% layout('layout') -%>
+    </div>
 
-<div class="animeTable">
-  <table class="animeList">
-    <thead>
-    <tr>
-      <th>タイトル</th>
-      <th>時間</th>
-      <th>曜日</th>
-      <th>お気に入り</th>
-      <th>放送局</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% data.forEach(function(val){ %>
-      <tr>
-        <td id="<%= val.title %>" onclick="createHash(this);"><%= val.title %></td>
-        <td><%= val.time %></td>
-        <td><%= val.week %></td>
-        <form method="post" action="/favorite/delete">
-          <td class="center"><input type="submit" value="削除" class="btn"></td>
-          <input type="hidden" value="<%= val.title %>" name ="title"/>
-          <input type="hidden" value="<%= profile.id %>" name ="user_id"/>
-        </form>
-        <td><%= val.station %></td>
-      </tr>
-    <% }) %>
-    </tbody>
-  </table>
-</div>
+    <div class="animeTable">
+      <table class="animeList">
+        <thead>
+          <tr>
+            <th>タイトル</th>
+            <th>時間</th>
+            <th>曜日</th>
+            <th>お気に入り</th>
+            <th>放送局</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% data.forEach(function(val){ %>
+            <tr>
+              <td id="<%= val.title %>" onclick="createHash(this);"><%= val.title %></td>
+              <td><%= val.time %></td>
+              <td><%= val.week %></td>
+              <form method="post" action="/favorite/delete">
+                <td class="center"><input type="submit" value="削除" class="btn"></td>
+                <input type="hidden" value="<%= val.title %>" name ="title"/>
+                <input type="hidden" value="<%= profile.id %>" name ="user_id"/>
+              </form>
+              <td><%= val.station %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
 
-<!--Tweet表示部分-->
-<div id="twitter">
-  <form method="post" action="/twitter/post">
-    <textarea name="tweet" id="tweet" rows="4" cols="33"></textarea>
-    <input type="submit" value="tweet" class="tweetbtn">
-  </form>
+    <!--Tweet表示部分-->
+    <div id="twitter">
+      <form method="post" action="/twitter/post">
+        <textarea name="tweet" id="tweet" rows="4" cols="33"></textarea>
+        <input type="submit" value="tweet" class="tweetbtn">
+      </form>
 
-    <form method="post" action="/favorite/reply">
-      <input type="submit" value="今日放送のアニメを自分に送る" class="tweetbtn">
-    </form>
+      <form method="post" action="/favorite/reply">
+        <input type="submit" value="今日放送のアニメを自分に送る" class="tweetbtn">
+      </form>
 
+      <div class="scroll">
+        <table class="tweetArea">
+          <tr style="height: 20px;">
+            <th class="header"></th>
+          </tr>
 
-<div class="scroll">
-  <table class="tweetArea">
-    <tr style="height: 20px;">
-      <th class="header"></th>
-    </tr>
-
-    <% tweetList.forEach(function(tweet){ %>
-    <tr>
-      <td class="tweet">
-        <div class="profile">
-          <div class="image">
-            <img src=" <%= profile.profile_image_url  %> " width="30px; "/>
-          </div>
-          <div class="screen_name">
-            <p class="inner"><%= profile.name %></p>
-          </div>
-        </div>
-        <div>
-          <%= tweet.text %>
-        </div>
-
-      </td>
-
-    </tr>
-    <% }) %>
-  </table>
-</div>
-</div>
-
-<!--<div id="twitter" style="margin-left: 20px">-->
-  <!--<a class="twitter-timeline" href="https://twitter.com/nekokonekonene" data-widget-id="535407375339884546">@nekokonekoneneさんのツイート</a>-->
-  <!--<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>-->
-<!--</div>-->
-</body>
+          <% tweetList.forEach(function(tweet){ %>
+            <tr>
+              <td class="tweet">
+                <div class="profile">
+                  <div class="image">
+                    <img src=" <%= profile.profile_image_url  %> " width="30px; "/>
+                  </div>
+                  <div class="screen_name">
+                    <p class="inner"><%= profile.name %></p>
+                  </div>
+                </div>
+                <div>
+                  <%= tweet.text %>
+                </div>
+              </td>
+            </tr>
+          <% }) %>
+        </table>
+      </div>
+    </div>
+  </body>
 </html>

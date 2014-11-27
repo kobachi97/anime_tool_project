@@ -10,14 +10,14 @@
 <header >
 
   <!--<div style="float: left">-->
-  <div style="float:left; z-index: 1; width: 160px">
+  <div class="sideMenu">
     <img src=" <%= profile.profile_image_url  %> " width="100px; "/>
-    <h1><%= profile.name %></h1>
-    <h3>@<%= profile.screen_name %></h3>
-    <p><a href="/twitter/logout">logout</a></p>
-    <p><a href="/">ホーム</a></p>
+    <h1 class="userName"><%= profile.name %></h1>
+    <h3 class="userId">@<%= profile.screen_name %></h3>
 
-    <p><a href="/favorite/view">お気に入り一覧</a></p>
+    <div class="linkBox"><a href="/"></a><h1>HOME</h1></div>
+    <div class="linkBox"><a href="/favorite/view"></a><h1>FAVORITE</h1></div>
+    <div class="linkBox"><a href="/twitter/logout"></a><h1>LOGOUT</h1></div>
   </div>
 
 </header>

@@ -72,7 +72,7 @@ module.exports = {
             title: 'main',
             profile: profile,
             data: animeMap,
-            tweetList: tweetList
+            tweetList: tweetList,
           });
         }
       });
