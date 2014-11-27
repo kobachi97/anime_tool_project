@@ -18,6 +18,12 @@
     "oauth": "^0.9.12",
     "static-favicon": "~1.0.0",
     "connect-redis": "^2.0.0",
-    "ejs-locals": "~1.0.2"
+    "ejs-locals": "~1.0.2",
+    "underscore": "*",
+    "Async": "*",
+    "request": "*",
+    "should": "*",
+    "superagent": "*",
+    "twitter": "*"
   }
 }
