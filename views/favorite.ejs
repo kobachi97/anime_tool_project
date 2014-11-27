@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>お気に入り</title>
+    <title>FAVORITE</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <meta http-equiv="Content-Script-Type" content="text/javascript" />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -69,16 +69,18 @@
           <% tweetList.forEach(function(tweet){ %>
             <tr>
               <td class="tweet">
-                <div class="profile">
-                  <div class="image">
-                    <img src=" <%= profile.profile_image_url  %> " width="30px; "/>
+                <div class="tweetblock">
+                  <div class="profile">
+                    <div class="image">
+                      <img src=" <%= profile.profile_image_url  %> " width="30px; "/>
+                    </div>
+                    <div class="screen_name">
+                      <%= profile.name %>
+                    </div>
                   </div>
-                  <div class="screen_name">
-                    <p class="inner"><%= profile.name %></p>
+                  <div class="tweetText">
+                    <%= tweet.text %>
                   </div>
-                </div>
-                <div>
-                  <%= tweet.text %>
                 </div>
               </td>
             </tr>

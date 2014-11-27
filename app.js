@@ -39,6 +39,7 @@ controller.main  = require('./controller/main.js');
 controller.login  = require('./controller/login.js');
 controller.twitter  = require('./controller/twitter.js');
 controller.favorite  = require('./controller/favorite.js');
+controller.ranking  = require('./controller/ranking.js');
 
 require('./routes/index.js')(app, controller);
 
