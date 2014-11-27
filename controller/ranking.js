@@ -27,59 +27,54 @@ var tweetList;
 
 module.exports = {
   view: function(req, res) {
-    if (req.session.oauth && req.session.oauth.access_token) {
 
-      async.series([
-        function(done) {
+    async.series([
+      function(done) {
+        if (!req.session.twitter.user_id) {
+          done('user_id is null');
+        } else {
           twit.get('/users/show.json', {"user_id": req.session.twitter.user_id}, function (userData) {
             profile = userData;
             done(null);
           });
-        },
-        function(done) {
-          if (!req.session.twitter.user_id) {
-            done('user_id is null');
+        }
+      },
+      function(done) {
+        favoriteModel.selectRanking(function(err, result) {
+          if (err) {
+            done(err);
           } else {
-            favoriteModel.selectRanking(function(err, result) {
-              if (err) {
-                done(err);
-              } else {
-                var rank = 1;
-                console.log(result);
-
-                _.each(result, function(val) {
-                  val.rank = rank;
-                  rank++;
-                });
-                rankingData = result;
-                done(null);
-              }
+            var rank = 1;
+            _.each(result, function(val) {
+              val.rank = rank;
+              rank++;
             });
+            rankingData = result;
+            done(null);
           }
-        },
-        function(done) {
-          twitterController.getTimeline(req, function(err, result) {
-            if (err){
-              done(err);
-            } else {
-              tweetList = result;
-              done(null);
-            }
-          });
-        }
-      ], function(err) {
-        if (err) {
-          res.send();
-        } else {
-          res.render('ranking',{
-            ranking: rankingData,
-            profile: profile,
-            tweetList: tweetList
-          });
-        }
-      });
-    } else {
-      res.redirect('/login');
-    }
+        });
+      },
+      function(done) {
+        twitterController.getTimeline(req, function(err, result) {
+          if (err){
+            done(err);
+          } else {
+            tweetList = result;
+            done(null);
+          }
+        });
+      }
+    ], function(err) {
+      if (err) {
+        console.log('ERROR' + err);
+        res.send('{"error": "RANKING VIEW ERROR"}');
+      } else {
+        res.render('ranking',{
+          ranking: rankingData,
+          profile: profile,
+          tweetList: tweetList
+        });
+      }
+    });
   }
 };

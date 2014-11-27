@@ -90,7 +90,7 @@ var model = {
         return callback(null, data);
       }
     });
-  },
+  }
 };
 
 
