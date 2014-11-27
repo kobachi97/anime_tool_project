@@ -234,3 +234,40 @@ p.today {
   height:100%;
   text-indent:-999px;
 }
+
+.rankingList {
+  margin-right: 20px;
+  max-height: 900px;
+}
+
+.rankingList thead th {
+  /*padding: 10px;*/
+  font-weight: bold;
+  vertical-align: top;
+  color: #369;
+  border-bottom: 3px solid #036;
+  height: 25px;
+}
+
+.rankingList td {
+  /*width: 350px;*/
+  padding-bottom: 10px;
+  padding-top: 10px;
+  vertical-align: top;
+  border-bottom: 1px solid #ccc;
+  height: 50px;
+}
+
+.rankingList tbody td {
+  height: 50px;
+  min-width: 100px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.rankingList {
+  float: left;
+  margin-left: 30px;
+  overflow-y:scroll;
+  height:900px;
+}

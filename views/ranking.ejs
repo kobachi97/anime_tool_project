@@ -12,8 +12,8 @@
       <% layout('layout') -%>
     </div>
 
-    <div class="animeTable">
-      <table class="animeList">
+    <div class="rankingTable">
+      <table class="rankingList">
         <thead>
           <tr>
             <th>順位</th>
@@ -24,13 +24,49 @@
         <tbody>
           <% ranking.forEach(function(val){ %>
             <tr>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td><%= val.rank %></td>
+              <td><%= val.title %></td>
+              <td><p style="display: inline"><%= val.count %></p><p class="today">user</p></td>
             </tr>
           <% }) %>
         </tbody>
       </table>
+    </div>
+
+    <!--Tweet表示部分-->
+    <div id="twitter">
+      <form method="post" action="/twitter/post">
+        <textarea name="tweet" id="tweet" rows="4" cols="33"></textarea>
+        <input type="submit" value="tweet" class="tweetbtn">
+      </form>
+
+      <div class="scroll">
+        <table class="tweetArea">
+          <tr style="height: 20px;">
+            <th class="header"></th>
+          </tr>
+
+          <% tweetList.forEach(function(tweet){ %>
+          <tr>
+            <td class="tweet">
+              <div class="tweetblock">
+                <div class="profile">
+                  <div class="image">
+                    <img src=" <%= profile.profile_image_url  %> " width="30px; "/>
+                  </div>
+                  <div class="screen_name">
+                    <%= profile.name %>
+                  </div>
+                </div>
+                <div class="tweetText">
+                  <%= tweet.text %>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <% }) %>
+        </table>
+      </div>
     </div>
 
   </body>

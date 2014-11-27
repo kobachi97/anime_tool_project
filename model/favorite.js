@@ -82,7 +82,7 @@ var model = {
     });
   },
   selectRanking: function(callback) {
-    var query = 'SELECT COUNT(title),title FROM favorite GROUP BY title;';
+    var query = 'SELECT COUNT(title) as count,title FROM favorite GROUP BY title ORDER BY count DESC LIMIT 30;';
     db.getConnection().query(query, function(err, data) {
       if(err) {
         console.log('RANKING ' + err);
